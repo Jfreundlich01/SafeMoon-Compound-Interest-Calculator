@@ -1,143 +1,127 @@
-//form1 variables
-const form1 = document.querySelector(".form-1");
-const SafemoonCoins = document.getElementById("safemoon-coins-ammount");
-const coinsGained24H = document.getElementById("coins-gained-24h");
-const submitbtn1 = document.getElementById("btn-1");
-const coinsGained1M = document.getElementById("coins-gained-1m");
-const percGained1m = document.getElementById('perc-gained-1m');
-const coinsGained1Y = document.getElementById("coins-gained-1y");
-const percGained1Y  = document.getElementById('perc-gained-1y');
-const compCont = document.getElementById('compound-container')
-const compContSwitch = document.getElementById('compound-container-switch')
-const step1 = document.getElementById('step1');
-//form2 variables
-const form2 = document.querySelector(".form-2");
-const step2 = document.getElementById("step2");
-const roi = document.getElementById("invested");
+//tabs
+$('#calc-tabs a').on('click', function (e) {
+    e.preventDefault()
+    $(this).tab('show')
+  })
+
+
+
+//Coins gained in timeframe button
+const dayBtn = document.getElementById("24-hours-btn");
+const monthBtn = document.getElementById("one-month-btn");
+
+dayBtn.addEventListener("click",function(){
+    if(!dayBtn.classList.contains("active")){
+        dayBtn.classList.add("active")
+    }
+
+    if(monthBtn.classList.contains("active")){
+        monthBtn.classList.remove("active");
+    }
+})
+
+monthBtn.addEventListener("click",function(){
+    if(!monthBtn.classList.contains("active")){
+        monthBtn.classList.add("active")
+    }
+
+    if(dayBtn.classList.contains("active")){
+        dayBtn.classList.remove("active");
+    }
+})
+
+//tab 1
+const totalSafeMoon = document.getElementById("sfm");
+const gain = document.getElementById("gain");
+const invested = document.getElementById("invested");
 const price = document.getElementById("price");
-const value = document.getElementById("current-value");
-const year1tc = document.getElementById("year1-total-coins");
-const year2tc = document.getElementById("year2-total-coins");
-const year3tc = document.getElementById("year3-total-coins");
-const year4tc = document.getElementById("year4-total-coins");
-const year5tc = document.getElementById("year5-total-coins");
-const year1tv = document.getElementById("year1-total-value");
-const year2tv = document.getElementById("year2-total-value");
-const year3tv = document.getElementById("year3-total-value");
-const year4tv = document.getElementById("year4-total-value");
-const year5tv = document.getElementById("year5-total-value");
-const year1vi = document.getElementById("year1-value-increase");
-const year2vi = document.getElementById("year2-value-increase");
-const year3vi = document.getElementById("year3-value-increase");
-const year4vi = document.getElementById("year4-value-increase");
-const year5vi = document.getElementById("year5-value-increase");
-const year1Roi = document.getElementById("year1-roi");
-const year2Roi = document.getElementById("year2-roi");
-const year3Roi = document.getElementById("year3-roi");
-const year4Roi = document.getElementById("year4-roi");
-const year5Roi = document.getElementById("year5-roi");
-//form2 switch variables
-const year1tcswitch = document.getElementById("year1-total-coins-switch");
-const year2tcswitch = document.getElementById("year2-total-coins-switch");
-const year3tcswitch = document.getElementById("year3-total-coins-switch");
-const year4tcswitch = document.getElementById("year4-total-coins-switch");
-const year5tcswitch = document.getElementById("year5-total-coins-switch");
-const year1tvswitch = document.getElementById("year1-total-value-switch");
-const year2tvswitch = document.getElementById("year2-total-value-switch");
-const year3tvswitch = document.getElementById("year3-total-value-switch");
-const year4tvswitch = document.getElementById("year4-total-value-switch");
-const year5tvswitch = document.getElementById("year5-total-value-switch");
-const year1viswitch = document.getElementById("year1-value-increase-switch");
-const year2viswitch = document.getElementById("year2-value-increase-switch");
-const year3viswitch = document.getElementById("year3-value-increase-switch");
-const year4viswitch = document.getElementById("year4-value-increase-switch");
-const year5viswitch = document.getElementById("year5-value-increase-switch");
-const year1Roiswitch = document.getElementById("year1-roi-switch");
-const year2Roiswitch = document.getElementById("year2-roi-switch");
-const year3Roiswitch = document.getElementById("year3-roi-switch");
-const year4Roiswitch = document.getElementById("year4-roi-switch");
-const year5Roiswitch = document.getElementById("year5-roi-switch");
-var media= window.matchMedia("(max-width: 685px)")
+const gainedM = document.getElementById("gained-m");
+const percM = document.getElementById("perc-m");
+const gainedY = document.getElementById("gained-y");
+const percY = document.getElementById("perc-y");
+const value = document.getElementById("value");
+const form1 = document.getElementById("form1")
+const form1Btn = document.getElementById("form1-btn")
 
 
-//submit form1
+//calculate 1
 form1.addEventListener('submit', calculate1);
-//calculate Coins gained in First Month and in First Year
+
 function calculate1(e){
     e.preventDefault();
 
-    tc = SafemoonCoins.value;
-    cg = coinsGained24H.value;
+    //coins gained in first month
+    tc = totalSafeMoon.value;
+    cg = gain.value;
 
-    cgm = (cg * 30);
-    cgmp =(cgm/tc)*100;
-    cgmpv = cgmp.toFixed(2);
+    if(dayBtn.classList.contains("active")){
+        cgm = (cg*30);
+    } else{
+        cgm = (cg*1);
+    }
+    cgmp = ((cgm/tc)*100).toFixed(2);
 
-    cgy = cgm * 12;
-    cgyp = (cgy/tc)*100;
-    cgypv = cgyp.toFixed(2);
+    gainedM.innerHTML = `<span id="gained-m"> ${cgm.toLocaleString()}</span>`;
+    percM.innerHTML = `<span id="perc-m"> (${cgmp}%)</span>`
 
-    coinsGained1M.innerHTML = `<span id="coins-gained-1m"> ${cgm.toLocaleString()}</span>`;
-    percGained1m.innerHTML = `<span id="perc-gained-1m"> (${cgmpv}%)</span>`;
-    coinsGained1Y.innerHTML = `<span id="coins-gained-1y"> ${cgy.toLocaleString()}</span>`;
-    percGained1Y.innerHTML = `<span id="perc-gained-1y"> (${cgypv}%)<span>`;
+    //coins gained in first year
+    cgy = cgm*12
+    cgyp = ((cgy/tc)*100).toFixed(2);
 
-    form2.classList.remove("display")
-    form2.classList.add("clicked");
-    step2.classList.remove("display");
-    step1.classList.add("display");
+    gainedY.innerHTML = `<span id="gained-y"> ${cgy.toLocaleString()}</span>`;
+    percY.innerHTML = `<span id="perc-m"> (${cgyp}%)</span>`
 
-    if(media.matches && form2.classList.contains("clicked")){
-     } else{
-        compCont.classList.remove("display")
-     }
-}
-
-//submitform2
-form2.addEventListener("submit", calculate2);
-
-function calculate2(e){
-    e.preventDefault();
-
-    tc = SafemoonCoins.value;
-    cg = coinsGained24H.value;
-    
-    cgm = cg * 30;
-    cgmp =(cgm/tc)*100;
-    cgmpv = cgmp.toFixed(2);
-
-    cgy = cgm * 12;
-    cgyp = (cgy/tc)*100;
-    cgypv = cgyp.toFixed(2);
-
-    p = price.value;
-
+    //current value
     tcnum = parseInt(tc,10);
-    cgynum = parseInt(cgy,10);
-    int=(cgy/tc);
+    p = price.value
+
+    v= tcnum * p;
+
+
+    value.innerHTML = `<span id="value"> $${v.toLocaleString()}</span>`
+
+    // table1
+
+    const year1tc = document.getElementById("year1-total-coins");
+    const year2tc = document.getElementById("year2-total-coins");
+    const year3tc = document.getElementById("year3-total-coins");
+    const year4tc = document.getElementById("year4-total-coins");
+    const year5tc = document.getElementById("year5-total-coins");
+    const year1tv = document.getElementById("year1-total-value");
+    const year2tv = document.getElementById("year2-total-value");
+    const year3tv = document.getElementById("year3-total-value");
+    const year4tv = document.getElementById("year4-total-value");
+    const year5tv = document.getElementById("year5-total-value");
+    const year1Roi = document.getElementById("year1-roi");
+    const year2Roi = document.getElementById("year2-roi");
+    const year3Roi = document.getElementById("year3-roi");
+    const year4Roi = document.getElementById("year4-roi");
+    const year5Roi = document.getElementById("year5-roi");
+
+    int=(cgy/tc)
     intnum = parseFloat(int,10);
 
-    step2.classList.add("display");
-
-    //Compounding Interest: A=p(1 + (interest/n)^nt)
+    //Compounding Interest A=p(1+(interest/n)^nt)
     y1tc = parseInt((tcnum * Math.pow(1 + intnum,1)).toFixed(0),10);
     y2tc = parseInt((tcnum * Math.pow(1 + intnum,2)).toFixed(0),10);
     y3tc = parseInt((tcnum * Math.pow(1 + intnum,3)).toFixed(0),10);
     y4tc = parseInt((tcnum * Math.pow(1 + intnum,4)).toFixed(0),10);
     y5tc = parseInt((tcnum * Math.pow(1 + intnum,5)).toFixed(0),10);
 
-    console.log(typeof(y1tc));
-    //Total Value
     y1tv = parseFloat((y1tc * p).toFixed(2),10);
     y2tv = parseFloat((y2tc * p).toFixed(2),10);
     y3tv = parseFloat((y3tc * p).toFixed(2),10);
     y4tv = parseFloat((y4tc * p).toFixed(2),10);
     y5tv = parseFloat((y5tc * p).toFixed(2),10);
-    
-    //current Value
-    currentValue = tcnum * p
 
-    value.innerHTML = `<span id="current-value"> ${currentValue.toLocaleString()}$</span>`;
+    //Return on Investment
+
+    y1roi = Math.round(((y1tv-invested.value)/invested.value)*100);
+    y2roi = Math.round(((y2tv-invested.value)/invested.value)*100);
+    y3roi = Math.round(((y3tv-invested.value)/invested.value)*100);
+    y4roi = Math.round(((y4tv-invested.value)/invested.value)*100);
+    y5roi = Math.round(((y5tv-invested.value)/invested.value)*100);
+
     year1tc.innerHTML = `<span id="year1-total-coins">${y1tc.toLocaleString()}<span>`;
     year2tc.innerHTML = `<span id="year1-total-coins">${y2tc.toLocaleString()}<span>`;
     year3tc.innerHTML = `<span id="year1-total-coins">${y3tc.toLocaleString()}<span>`;
@@ -150,39 +134,110 @@ function calculate2(e){
     year4tv.innerHTML = `<span id="year1-total-value">$${y4tv.toLocaleString()}</span>`;
     year5tv.innerHTML = `<span id="year1-total-value">$${y5tv.toLocaleString()}</span>`;
 
-    //Return on Investment
-
-    y1roi = Math.round(((y1tv-roi.value)/roi.value)*100);
-    y2roi = Math.round(((y2tv-roi.value)/roi.value)*100);
-    y3roi = Math.round(((y3tv-roi.value)/roi.value)*100);
-    y4roi = Math.round(((y4tv-roi.value)/roi.value)*100);
-    y5roi = Math.round(((y5tv-roi.value)/roi.value)*100);
-
     year1Roi.innerHTML = `<span id="year1-roi">${y1roi.toLocaleString()}%</span>`
     year2Roi.innerHTML = `<span id="year1-roi">${y2roi.toLocaleString()}%</span>`
     year3Roi.innerHTML = `<span id="year1-roi">${y3roi.toLocaleString()}%</span>`
     year4Roi.innerHTML = `<span id="year1-roi">${y4roi.toLocaleString()}%</span>`
     year5Roi.innerHTML = `<span id="year1-roi">${y5roi.toLocaleString()}%</span>`
+}
 
-    //switch
-    if(media.matches && form2.classList.contains("clicked")){
-        compContSwitch.classList.remove("display");
-        year1tcswitch.innerHTML = `<span id="year1-total-coins-switch">${y1tc.toLocaleString()}<span>`;
-        year2tcswitch.innerHTML = `<span id="year1-total-coins-switch">${y2tc.toLocaleString()}<span>`;
-        year3tcswitch.innerHTML = `<span id="year1-total-coins-switch">${y3tc.toLocaleString()}<span>`;
-        year4tcswitch.innerHTML = `<span id="year1-total-coins-switch">${y4tc.toLocaleString()}<span>`;
-        year5tcswitch.innerHTML = `<span id="year1-total-coins-switch">${y5tc.toLocaleString()}<span>`;
-        
-        year1tvswitch.innerHTML = `<span id="year1-total-value-switch">$${y1tv.toLocaleString()}</span>`;
-        year2tvswitch.innerHTML = `<span id="year1-total-value-switch">$${y2tv.toLocaleString()}</span>`;
-        year3tvswitch.innerHTML = `<span id="year1-total-value-switch">$${y3tv.toLocaleString()}</span>`;
-        year4tvswitch.innerHTML = `<span id="year1-total-value-switch">$${y4tv.toLocaleString()}</span>`;
-        year5tvswitch.innerHTML = `<span id="year1-total-value-switch">$${y5tv.toLocaleString()}</span>`;
+//calculate 1
+form2.addEventListener('submit', calculate2);
 
-        year1Roiswitch.innerHTML = `<span id="year1-roi-switch">${y1roi.toLocaleString()}%</span>`
-        year2Roiswitch.innerHTML = `<span id="year1-roi-switch">${y2roi.toLocaleString()}%</span>`
-        year3Roiswitch.innerHTML = `<span id="year1-roi-switch">${y3roi.toLocaleString()}%</span>`
-        year4Roiswitch.innerHTML = `<span id="year1-roi-switch">${y4roi.toLocaleString()}%</span>`
-        year5Roiswitch.innerHTML = `<span id="year1-roi-switch">${y5roi.toLocaleString()}%</span>`
-    }
+function calculate2(e){
+    e.preventDefault();
+
+
+    const invested = document.getElementById("money");
+    const price = document.getElementById("price2");
+    const futurePrice = document.getElementById("fp2");
+    const cgp = document.getElementById("cgp");
+    const purchased = document.getElementById("purchased");
+    const gainedM = document.getElementById("gained-m2");
+    const percM = document.getElementById("perc-m2");
+    const gainedY = document.getElementById("gained-y2");
+    const percY = document.getElementById("perc-y2");
+
+    tc = (money.value)/(price.value)
+    tax = tc/10;
+    taxv = tc-tax;
+
+    cgpi=(cgp.value/100)
+
+    cgm= (cgpi*taxv)*30;
+    cgmp = ((cgm/taxv)*100).toFixed(2);
+
+    cgy = cgm * 12;
+    cgyp = ((cgy/taxv)*100).toFixed(2);
+
+    console.log(cgm)
+
+    purchased.innerHTML = `<span id="purchased"> ${taxv.toLocaleString()}</span>`;
+    gainedM.innerHTML = `<span id="gained-m2"> ${cgm.toLocaleString()}</span>`;
+    percM.innerHTML = `<span id="perc-m2"> (${cgmp}%)</span>`;
+    gainedY.innerHTML = `<span id="gained-y2"> ${cgy.toLocaleString()}</span>`;
+    percY.innerHTML = `<span id="perc-y2"> (${cgyp}%)</span>`;
+
+    // table2
+
+    const year1tc2 = document.getElementById("year1-total-coins2");
+    const year2tc2 = document.getElementById("year2-total-coins2");
+    const year3tc2 = document.getElementById("year3-total-coins2");
+    const year4tc2 = document.getElementById("year4-total-coins2");
+    const year5tc2 = document.getElementById("year5-total-coins2");
+    const year1tv2 = document.getElementById("year1-total-value2");
+    const year2tv2 = document.getElementById("year2-total-value2");
+    const year3tv2 = document.getElementById("year3-total-value2");
+    const year4tv2 = document.getElementById("year4-total-value2");
+    const year5tv2 = document.getElementById("year5-total-value2");
+    const year1Roi2 = document.getElementById("year1-roi2");
+    const year2Roi2 = document.getElementById("year2-roi2");
+    const year3Roi2 = document.getElementById("year3-roi2");
+    const year4Roi2 = document.getElementById("year4-roi2");
+    const year5Roi2 = document.getElementById("year5-roi2");
+
+    int=(cgy/tc)
+    tcnum = parseInt(taxv,10);
+    intnum = parseFloat(int,10);
+
+    //Compounding Interest A=p(1+(interest/n)^nt)
+    y1tc2 = parseInt((tcnum * Math.pow(1 + intnum,1)).toFixed(0),10);
+    y2tc2 = parseInt((tcnum * Math.pow(1 + intnum,2)).toFixed(0),10);
+    y3tc2 = parseInt((tcnum * Math.pow(1 + intnum,3)).toFixed(0),10);
+    y4tc2 = parseInt((tcnum * Math.pow(1 + intnum,4)).toFixed(0),10);
+    y5tc2 = parseInt((tcnum * Math.pow(1 + intnum,5)).toFixed(0),10);
+
+    y1tv2 = parseFloat((y1tc2 * futurePrice.value).toFixed(2),10);
+    y2tv2 = parseFloat((y2tc2 * futurePrice.value).toFixed(2),10);
+    y3tv2 = parseFloat((y3tc2 * futurePrice.value).toFixed(2),10);
+    y4tv2 = parseFloat((y4tc2 * futurePrice.value).toFixed(2),10);
+    y5tv2 = parseFloat((y5tc2 * futurePrice.value).toFixed(2),10);
+
+    //Return on Investment
+
+    y1roi2 = Math.round(((y1tv2-invested.value)/invested.value)*100);
+    y2roi2 = Math.round(((y2tv2-invested.value)/invested.value)*100);
+    y3roi2 = Math.round(((y3tv2-invested.value)/invested.value)*100);
+    y4roi2 = Math.round(((y4tv2-invested.value)/invested.value)*100);
+    y5roi2 = Math.round(((y5tv2-invested.value)/invested.value)*100);
+
+    year1tc2.innerHTML = `<span id="year1-total-coins2">${y1tc2.toLocaleString()}<span>`;
+    year2tc2.innerHTML = `<span id="year1-total-coins2">${y2tc2.toLocaleString()}<span>`;
+    year3tc2.innerHTML = `<span id="year1-total-coins2">${y3tc2.toLocaleString()}<span>`;
+    year4tc2.innerHTML = `<span id="year1-total-coins2">${y4tc2.toLocaleString()}<span>`;
+    year5tc2.innerHTML = `<span id="year1-total-coins2">${y5tc2.toLocaleString()}<span>`;
+    
+    year1tv2.innerHTML = `<span id="year1-total-value2">$${y1tv2.toLocaleString()}</span>`;
+    year2tv2.innerHTML = `<span id="year1-total-value2">$${y2tv2.toLocaleString()}</span>`;
+    year3tv2.innerHTML = `<span id="year1-total-value2">$${y3tv2.toLocaleString()}</span>`;
+    year4tv2.innerHTML = `<span id="year1-total-value2">$${y4tv2.toLocaleString()}</span>`;
+    year5tv2.innerHTML = `<span id="year1-total-value2">$${y5tv2.toLocaleString()}</span>`;
+
+    year1Roi2.innerHTML = `<span id="year1-roi2">${y1roi2.toLocaleString()}%</span>`;
+    year2Roi2.innerHTML = `<span id="year1-roi2">${y2roi2.toLocaleString()}%</span>`;
+    year3Roi2.innerHTML = `<span id="year1-roi2">${y3roi2.toLocaleString()}%</span>`;
+    year4Roi2.innerHTML = `<span id="year1-roi2">${y4roi2.toLocaleString()}%</span>`;
+    year5Roi2.innerHTML = `<span id="year1-roi">${y5roi2.toLocaleString()}%</span>`;
+    
+    console.log(tcnum)
 }

@@ -4,129 +4,204 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-    <link rel="stylesheet" href="stylesheet.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> 
     <title>Safemoon Compound Interest Calculator</title>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-C5BT5JVR27"></script>
-    <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-C5BT5JVR27');
-    </script>
 </head>
 <body>
-    <div class="card shadow-lg p-3 mb-5 bg-white rounded" >
-        <div class="d-flex justify-content-center title">SafeMoon Compound Interest Calculator</div>
-        <p class="instructions step1" id="step1">Step 1: Enter the amount of Safemoon coins you have and the amount of coins you gain every day (I track my generation and just average it out; some days are more some days less). Hit "Calculate."</p>
-        <form class="form-1">
-            <div class="row d-flex justify-content-center">
-                <div class="col-md-3">
-                    <input type="number" min="1" class="form-control" id="safemoon-coins-ammount" placeholder="Amount of SafeMoon Coins">
+<!-- Nav -->
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        <ul class="nav nav-tabs card-header-tabs row" id="calc-tabs" role="tablist">
+                            <li class="nav-item col-6">
+                                <a href="#Own-SafeMoon" class="nav-link text-center active" role="tab" aria-controls="Own-SafeMoon">What could the value of my current Safemoon be?</a>
+                            </li>
+                            <li class="nav-item col-6 col-6">
+                                <a href="#buy-SafeMoon" class="nav-link text-center" role="tab" aria-controls="buy-SafeMoon">If I buy Safemoon now what could the value be?</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-title text-center my-4">Safemoon Compound Interest Calculator</h4>
+                        <div class="tab-content mt-3">
+                            <div class="tab-pane active" id="Own-SafeMoon" role="tabpanel">
+                                <form id="form1">
+                                    <div class="form-group row align-items-center">
+                                        <label for="SafeMoon-Coins" class="col-6 col-md-3" id="coin-label">Total # of SafeMoon Coins you own</label>
+                                        <div class="col-6 col-md-3 ">
+                                            <input type="number" class="form-control" placeholder="100000000" id="sfm">
+                                        </div>
+                                        <button class="btn btn-outline-secondary dropdown-toggle col-6 col-md-3 col-lg-2 d-inline-block mt-2" type="button" data-bs-toggle="dropdown" aria-expanded="false"id="coin-gained-btn">Coins Gained</button>
+                                            <ul class="dropdown-menu w-50">
+                                                <li><a class="dropdown-item active" id="24-hours-btn" href="#">Over 24 hours</a></li>
+                                                <li><a class="dropdown-item" id="one-month-btn"href="#">Over one month</a></li>
+                                            </ul>
+                                        <div class="col-6 col-md-3 col-lg-4">
+                                            <input type="number" class="form-control" placeholder="100000" id="gain">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row align-items-center">
+                                        <label for="SafeMoon-Coins" class="col-6 col-md-3">Total Money Invested</label>
+                                        <div class="col-6 col-md-3 small-margin mt-2">
+                                            <input type="number" class="form-control" placeholder="100" id="invested">
+                                        </div>
+                                         <label for="coins-Gained" class="col-6 col-md-3 col-lg-2">Price of SafeMoon</label>
+                                        <div class="col-6 col-md-3 col-lg-4">
+                                            <input type="number" step="any" class="form-control mt-2" placeholder=".00000743" id="price">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <button type="submit" class="btn btn-primary my-4" id="form1-btn">Calculate</button>
+                                    </div>
+                                </form>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <p class="text-center">SafeMoon coins gained in first month:<span id="gained-m"></span><span id="perc-m"></span></p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <p class="text-center">Safemoon Coins Gained in first year:<span id="gained-y"></span><span id="perc-y"></span></p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <p class="text-center">Current Value at price:<span id="value"></span></p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="table-responsive">
+                                    <table class="table text-center align-middle">
+                                        <thead>
+                                            <tr>
+                                            <th scope="col"></th>
+                                            <th scope="col">Year 1</th>
+                                            <th scope="col">Year 2</th>
+                                            <th scope="col">Year 3</th>
+                                            <th scope="col">Year 4</th>
+                                            <th scope="col">Year 5</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                            <th scope="row">Total Safemoon Coins</th>
+                                            <td><span id="year1-total-coins"></span></td>
+                                            <td><span id="year2-total-coins"></span></td>
+                                            <td><span id="year3-total-coins"></span></td>
+                                            <td><span id="year4-total-coins"></span></td>
+                                            <td><span id="year5-total-coins"></span></td>
+                                            </tr>
+                                            <tr>
+                                            <th scope="row">Total Value</th>
+                                            <td><span id="year1-total-value"></span></td>
+                                            <td><span id="year2-total-value"></span></td>
+                                            <td><span id="year3-total-value"></span></td>
+                                            <td><span id="year4-total-value"></span></td>
+                                            <td><span id="year5-total-value"></span></td>
+                                            </tr>
+                                            <tr>
+                                            <th scope="row">Return on Investment</th>    
+                                            <td><span id="year1-roi"></span></td>
+                                            <td><span id="year2-roi"></span></td>
+                                            <td><span id="year3-roi"></span></td>
+                                            <td><span id="year4-roi"></span></td>
+                                            <td><span id="year5-roi"></span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="buy-SafeMoon" role="tabpanel" aria-labelledby="buy-tab">
+                            <form id="form2">
+                                    <div class="form-group row align-items-center">
+                                        <label for="SafeMoon-Coins" class="col-md-4">How much money would you like to invest?</label>
+                                        <div class="col-md-2">
+                                            <input type="number" class="form-control" placeholder="100" id="money">
+                                        </div>
+                                        <label for="SafeMoon-Coins" class="col-md-3 col-lg-4 mt-2">What price will you purchase SafeMoon at?</label>
+                                        <div class="col-md-3 col-lg-2">
+                                            <input type="number" step="any" class="form-control" placeholder=".00000743" id="price2">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row align-items-center">
+                                        <label for="SafeMoon-Coins" class="col-md-4 mt-2">Daily rate of coin gain (this is automatically set to .06%, change it if you like)</label>
+                                        <div class="col-md-2">
+                                            <input type="number" step ="any" class="form-control" placeholder=".06" id="cgp">
+                                        </div>
+                                        <label for="SafeMoon-Coins" class="col-md-3 col-lg-4 mt-2">Potential SafeMoon price?</label>
+                                        <div class="col-md-3 col-lg-2">
+                                            <input type="number" step="any" class="form-control" placeholder=".005" id="fp2">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <button type="submit" class="btn btn-primary my-4" id="form2-btn">Calculate</button>
+                                    </div>
+                                </form>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <p class="text-center">Total SafeMoon Purchased:<span id="purchased"></span></p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <p class="text-center">SafeMoon coins gained in first month:<span id="gained-m2"></span><span id="perc-m2"></span></p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <p class="text-center">Safemoon Coins Gained in first year:<span id="gained-y2"></span><span id="perc-y2"></span></p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="table-responsive">
+                                    <table class="table text-center align-middle">
+                                        <thead>
+                                            <tr>
+                                            <th scope="col"></th>
+                                            <th scope="col">Year 1</th>
+                                            <th scope="col">Year 2</th>
+                                            <th scope="col">Year 3</th>
+                                            <th scope="col">Year 4</th>
+                                            <th scope="col">Year 5</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                            <th scope="row">Total Safemoon Coins</th>
+                                            <td><span id="year1-total-coins2"></span></td>
+                                            <td><span id="year2-total-coins2"></span></td>
+                                            <td><span id="year3-total-coins2"></span></td>
+                                            <td><span id="year4-total-coins2"></span></td>
+                                            <td><span id="year5-total-coins2"></span></td>
+                                            </tr>
+                                            <tr>
+                                            <th scope="row">Total Value</th>
+                                            <td><span id="year1-total-value2"></span></td>
+                                            <td><span id="year2-total-value2"></span></td>
+                                            <td><span id="year3-total-value2"></span></td>
+                                            <td><span id="year4-total-value2"></span></td>
+                                            <td><span id="year5-total-value2"></span></td>
+                                            </tr>
+                                            <tr>
+                                            <th scope="row">Return on Investment</th>    
+                                            <td><span id="year1-roi2"></span></td>
+                                            <td><span id="year2-roi2"></span></td>
+                                            <td><span id="year3-roi2"></span></td>
+                                            <td><span id="year4-roi2"></span></td>
+                                            <td><span id="year5-roi2"></span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-3">
-                    <input type="number" min="1" max="1000000000000" class="form-control" id="coins-gained-24h" placeholder="Coins gained in 24 hour window">
-                </div>
-                <button type="submit" class="col-md-2" id="btn-1">Calculate</button>
-            </div>    
-        </form>
-        <div class="container coin-interest">
-            <div class="row">
-                <p class="col-md text-center bold" style="padding-left:20px;">Coins gained in First month:<span id="coins-gained-1m"> </span><span id="perc-gained-1m"><span></p>
-                <p class="col-md text-center bold">Coins gained in First year:<span id="coins-gained-1y"></span><span id="perc-gained-1y"><span></p>
-                <p class="col-sm text-center bold">Current Value:<span id="current-value"></span></p>
-            </div>
-        </div>
-        <p class="instructions step2 display" id="step2">Step 2: Enter the total amount of money you have invested into Safemoon. Enter in a price you would like to look at your ROI for (You can change and play around with this after). Hit "Calculate."</p>
-        <form class="form-2 display">
-            <div class="row d-flex justify-content-center">
-                <div class="col-md-3">
-                    <input type="number" class="form-control" id="invested" placeholder="Total money invested">
-                    
-                </div>
-                <div class="col-md-3">
-                    <input type="number" step="any" class="form-control" id="price" placeholder="Price of SafeMoon">
-                </div>
-                <button type="submit" class="col-md-2" id="btn-2">Calculate</button>
-            </div>
-        </form>
-        <div class="container year-compound display" id="compound-container">
-            <div class="row justify-content-center years">
-                <div class="col-sm-2"></div>
-                <div class="col-sm-2">Year 1</div>
-                <div class="col-sm-2">Year 2</div>
-                <div class="col-sm-2">Year 3</div>
-                <div class="col-sm-2">Year 4</div>
-                <div class="col-sm-2">Year 5</div>
-            </div>
-            <br>
-            <div class="row justify-content-center total-safemoon-coins">
-                <div class="col-sm-2 bold">Total Safemoon Coins</div>
-                <div class="col-sm-2"><span id="year1-total-coins"><span></div>
-                <div class="col-sm-2"><span id="year2-total-coins"></span></div>
-                <div class="col-sm-2"><span id="year3-total-coins"></span></div>
-                <div class="col-sm-2"><span id="year4-total-coins"></span></div>
-                <div class="col-sm-2"><span id="year5-total-coins"></span></div>
-            </div>
-            <div class="row justify-content-center total-value">
-                <div class="col-sm-2 bold">Total Value</div>
-                <div class="col-sm-2"><span id="year1-total-value"></span></div>
-                <div class="col-sm-2"><span id="year2-total-value"></span></div>
-                <div class="col-sm-2"><span id="year3-total-value"></span></div>
-                <div class="col-sm-2"><span id="year4-total-value"></span></div>
-                <div class="col-sm-2"><span id="year5-total-value"></span></div>
-            </div>
-            <div class="row justify-content-center total-value">
-                <div class="col-sm-2 bold">Return on Investment</div>
-                <div class="col-sm-2"><span id="year1-roi"></span></div>
-                <div class="col-sm-2"><span id="year2-roi"></span></div>
-                <div class="col-sm-2"><span id="year3-roi"></span></div>
-                <div class="col-sm-2"><span id="year4-roi"></span></div>
-                <div class="col-sm-2"><span id="year5-roi"></span></div>   
-            </div>
-        </div>
-        <div class="container year-compound-switch display" id="compound-container-switch">
-            <div class="row switch">
-                <div class="col-xs-4"><span>Years</span<></div>
-                <div class="col-xs-4"># of Coins</div>
-                <div class="col-xs-4">Value</div>
-                <div class="col-xs-4 justfiy-content-center">ROI</div>
-            </div>
-            <div class="row total-safemoon-coins">
-                <div class="col-xs-4 align-middle">Year 1</div>
-                <div class="col-xs-4"><span id="year1-total-coins-switch"><span></div>
-                <div class="col-xs-4"><span id="year1-total-value-switch"></span></div>
-                <div class="col-xs-4"><span id="year1-roi-switch"></span></div>
-            </div>
-            <div class="row  total-safemoon-coins">
-                <div class="col-xs-4">Year 2</div>
-                <div class="col-xs-4"><span id="year2-total-coins-switch"><span></div>
-                <div class="col-xs-4"><span id="year2-total-value-switch"></span></div>
-                <div class="col-xs-4"><span id="year2-roi-switch"></span></div>
-            </div>
-            <div class="row  total-safemoon-coins">
-                <div class="col-xs-4">Year 3</div>
-                <div class="col-xs-4"><span id="year3-total-coins-switch"><span></div>
-                <div class="col-xs-4"><span id="year3-total-value-switch"></span></div>
-                <div class="col-xs-4"><span id="year3-roi-switch"></span></div>
-            </div>
-            <div class="row  total-safemoon-coins">
-                <div class="col-xs-4">Year 4</div>
-                <div class="col-xs-4"><span id="year4-total-coins-switch"><span></div>
-                <div class="col-xs-4"><span id="year4-total-value-switch"></span></div>
-                <div class="col-xs-4"><span id="year4-roi-switch"></span></div>
-            </div>
-            <div class="row  total-safemoon-coins">
-                <div class="col-xs-4">Year 5</div>
-                <div class="col-xs-4"><span id="year5-total-coins-switch"><span></div>
-                <div class="col-xs-4"><span id="year5-total-value-switch"></span></div>
-                <div class="col-xs-4"><span id="year5-roi-switch"></span></div>
             </div>
         </div>
     </div>
-    <!-- javascript -->
-    <script src="app.js"></script>
+
+<!-- javascript -->
+<script src="app.js"></script>
 </body>
 </html>
